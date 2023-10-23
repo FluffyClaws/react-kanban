@@ -1,13 +1,14 @@
 import React from "react";
+import RepoInput from "../components/RepoInput";
+import KanbanBoard from "../components/KanbanBoard";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>placeholder</h1>
-      </header>
+    <div>
+      <RepoInput />
+      <KanbanBoard />
     </div>
   );
-}
+};
 
 export default App;
