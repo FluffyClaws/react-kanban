@@ -7,7 +7,16 @@ import Column from "./Column";
 
 const KanbanBoard: React.FC = () => {
   const dispatch = useDispatch();
-  const issues = useSelector((state: any) => state.issues);
+  const repoUrl = useSelector((state: any) => state.issues.currentRepoUrl);
+  const issues = useSelector(
+    (state: any) =>
+      state.issues.issuesData[repoUrl] || {
+        todo: [],
+        inProgress: [],
+        done: [],
+      }
+  );
+  console.log(repoUrl, issues);
 
   const handleDragEnd = (result: any) => {
     const { destination, source } = result;
@@ -22,6 +31,7 @@ const KanbanBoard: React.FC = () => {
     }
 
     const payload = {
+      repoUrl: repoUrl,
       source: {
         droppableId: source.droppableId,
         index: source.index,
@@ -34,6 +44,11 @@ const KanbanBoard: React.FC = () => {
 
     dispatch(moveIssue(payload));
   };
+
+  // If repoUrl is not set, don't render the board
+  if (!repoUrl) {
+    return <div>Please enter a repository URL to load issues.</div>;
+  }
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

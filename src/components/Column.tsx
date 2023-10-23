@@ -10,6 +10,7 @@ interface ColumnProps {
 }
 
 const Column: React.FC<ColumnProps> = ({ title, issues, columnId }) => {
+  console.log(issues);
   const ids = issues.map((issue) => issue.id);
   const uniqueIds = new Set(ids);
   if (ids.length !== uniqueIds.size) {

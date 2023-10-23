@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchIssues } from "../api/githubAPI";
-import { setIssues } from "../features/issuesSlice";
+import { setIssues, setRepoUrl } from "../features/issuesSlice";
 
 const RepoInput: React.FC = () => {
   const [url, setUrl] = useState("");
@@ -10,7 +10,9 @@ const RepoInput: React.FC = () => {
   const handleLoad = async () => {
     try {
       const issues = await fetchIssues(url);
-      dispatch(setIssues(issues));
+      dispatch(setIssues({ repoUrl: url, issues }));
+      console.log(issues);
+      dispatch(setRepoUrl(url));
     } catch (error) {
       console.error("Failed to fetch issues:", error);
     }
