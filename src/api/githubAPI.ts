@@ -8,5 +8,6 @@ export const fetchIssues = async (repoUrl: string): Promise<any[]> => {
     throw new Error(`Failed to fetch issues: ${response.statusText}`);
   }
 
-  return response.json();
+  const issues = await response.json();
+  return issues;
 };

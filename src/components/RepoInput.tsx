@@ -1,5 +1,3 @@
-// src/components/RepoInput.tsx
-
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchIssues } from "../api/githubAPI";
@@ -22,6 +20,18 @@ const RepoInput: React.FC = () => {
     <div>
       <input value={url} onChange={(e) => setUrl(e.target.value)} />
       <button onClick={handleLoad}>Load</button>
+      <div>
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          Visit Repo
+        </a>
+        <a
+          href={url.split("/").slice(0, -1).join("/")}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Visit Owner's Profile
+        </a>
+      </div>
     </div>
   );
 };
