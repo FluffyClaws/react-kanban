@@ -3,6 +3,13 @@ export interface Issue {
   title: string;
   state: "open" | "closed";
   assignee: any;
+  number: number; // Issue number
+  created_at: string;
+  user: {
+    login: string;
+  };
+  comments: number;
+  pull_request?: { [key: string]: any };
 }
 
 export interface IssuesState {
@@ -23,9 +30,6 @@ export interface ColumnProps {
 }
 
 export interface IssueProps {
-  issue: {
-    id: number;
-    title: string;
-  };
+  issue: Issue;
   index: number;
 }
