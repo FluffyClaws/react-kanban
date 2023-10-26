@@ -11,7 +11,7 @@ const Column: React.FC<ColumnProps> = ({ title, issues, columnId }) => {
     console.error("Duplicate IDs detected:", ids);
   }
   return (
-    <Card style={{ margin: "16px", width: "250px" }}>
+    <Card>
       <Card.Header>{title}</Card.Header>
       <Droppable droppableId={columnId}>
         {(provided) => (

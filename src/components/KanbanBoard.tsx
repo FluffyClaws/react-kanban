@@ -5,6 +5,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Column from "./Column";
 import useDragEnd from "../hooks/useDragEnd";
 import { getIssuesForCurrentRepo } from "../features/issuesSelectors";
+import "../style/KanbanBoard.scss";
 
 const KanbanBoard: React.FC = () => {
   const handleDragEnd = useDragEnd();
@@ -16,9 +17,9 @@ const KanbanBoard: React.FC = () => {
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Container>
-        <Row>
+        <Row className="gy-4">
           <Col>
-            <Column title="ToDo" issues={issues.todo} columnId="todo" />
+            <Column title="To Do" issues={issues.todo} columnId="todo" />
           </Col>
           <Col>
             <Column
