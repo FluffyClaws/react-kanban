@@ -7,15 +7,16 @@ import Column from "./Column";
 
 const KanbanBoard: React.FC = () => {
   const dispatch = useDispatch();
-  const repoUrl = useSelector((state: any) => state.issues.currentRepoUrl);
+  const repoUrl = useSelector((state: any) => state.issues?.currentRepoUrl);
   const issues = useSelector(
     (state: any) =>
-      state.issues.issuesData[repoUrl] || {
+      state.issues?.issuesData?.[repoUrl] || {
         todo: [],
         inProgress: [],
         done: [],
       }
   );
+
   console.log(repoUrl, issues);
 
   const handleDragEnd = (result: any) => {
