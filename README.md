@@ -1,46 +1,31 @@
-# Getting Started with Create React App
+# GitHub Kanban Board
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A dynamic web application that visualizes GitHub repository issues as a Kanban board. Simply enter the URL of a GitHub repository, and view its issues categorized into different stages of a workflow.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Dynamic Repository Input**: Enter any GitHub repository URL to visualize its issues.
+- **Three-Column Layout**:
+  - **To Do**: Displays all new issues.
+  - **In Progress**: Shows opened issues that have an assignee.
+  - **Done**: Lists all closed issues.
+- **Drag-n-Drop Functionality**: Easily move issues between columns and change their order.
+- **Persistent State**: The position of issues (both column and order) is stored across searches and browser sessions. If you load issues for one repo, switch to another, and then return to the first, all your changes will be retained.
+- **Quick Links**: Directly visit the profile of the repository owner or the repository itself with convenient links located below the input.
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **React 18**: Utilizes the latest React version with hooks for efficient state management and rendering.
+- **TypeScript**: Strongly-typed language that builds on JavaScript, ensuring more robust code.
+- **React-Bootstrap**: Provides responsive design and styled-components for a modern UI/UX.
+- **Redux-Toolkit**: Efficient state management tool for storing issues and their positions.
+- **GitHub API**: Fetches issues dynamically based on user input.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## How to Use
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Navigate to the application.
+2. Enter the desired GitHub repository URL in the input at the top of the page (e.g., `https://github.com/facebook/react`).
+3. Click "Load".
+4. View the issues displayed on the Kanban board.
+5. Drag and drop issues between columns or reorder them as desired.
+6. To visit the profile of the repository owner or the repository itself, click on the respective links below the input.
