@@ -17,8 +17,6 @@ const KanbanBoard: React.FC = () => {
       }
   );
 
-  console.log(repoUrl, issues);
-
   const handleDragEnd = (result: any) => {
     const { destination, source } = result;
 

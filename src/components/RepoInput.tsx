@@ -8,13 +8,17 @@ const RepoInput: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleLoad = async () => {
-    try {
-      const issues = await fetchIssues(url);
-      dispatch(setIssues({ repoUrl: url, issues }));
-      console.log(issues);
+    const savedState = JSON.parse(localStorage.getItem("issuesState") || "{}");
+    if (savedState.issuesData && savedState.issuesData[url]) {
       dispatch(setRepoUrl(url));
-    } catch (error) {
-      console.error("Failed to fetch issues:", error);
+    } else {
+      try {
+        const issues = await fetchIssues(url);
+        dispatch(setIssues({ repoUrl: url, issues }));
+        dispatch(setRepoUrl(url));
+      } catch (error) {
+        console.error("Failed to fetch issues:", error);
+      }
     }
   };
 

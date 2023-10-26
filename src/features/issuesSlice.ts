@@ -32,7 +32,6 @@ const issuesSlice = createSlice({
       action: PayloadAction<{ repoUrl: string; issues: Issue[] }>
     ) => {
       const { repoUrl, issues } = action.payload;
-      console.log(action.payload);
       if (!repoUrl) {
         console.error("Repo URL is not provided.");
         return;
@@ -48,24 +47,19 @@ const issuesSlice = createSlice({
           inProgress: [],
           done: [],
         };
+
+        issues.forEach((issue) => {
+          if (issue.state === "closed") {
+            state.issuesData[repoUrl].done.push(issue);
+          } else if (issue.assignee) {
+            state.issuesData[repoUrl].inProgress.push(issue);
+          } else {
+            state.issuesData[repoUrl].todo.push(issue);
+          }
+        });
+
+        localStorage.setItem("issuesState", JSON.stringify(state));
       }
-
-      state.issuesData[repoUrl].todo = [];
-      state.issuesData[repoUrl].inProgress = [];
-      state.issuesData[repoUrl].done = [];
-
-      issues.forEach((issue) => {
-        if (issue.state === "closed") {
-          state.issuesData[repoUrl].done.push(issue);
-        } else if (issue.assignee) {
-          state.issuesData[repoUrl].inProgress.push(issue);
-        } else {
-          state.issuesData[repoUrl].todo.push(issue);
-        }
-      });
-
-      localStorage.setItem("issuesState", JSON.stringify(state));
-      console.log(state);
     },
 
     moveIssue: (
@@ -100,6 +94,13 @@ const issuesSlice = createSlice({
 
     setRepoUrl: (state, action: PayloadAction<string>) => {
       state.currentRepoUrl = action.payload;
+      const savedState = JSON.parse(
+        localStorage.getItem("issuesState") || "{}"
+      );
+      if (savedState.issuesData && savedState.issuesData[action.payload]) {
+        state.issuesData[action.payload] =
+          savedState.issuesData[action.payload];
+      }
     },
   },
 });
