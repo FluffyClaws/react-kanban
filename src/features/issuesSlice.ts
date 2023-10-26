@@ -24,6 +24,10 @@ const issuesSlice = createSlice({
   initialState,
   reducers: {
     setIssues: (state, action: PayloadAction<Issue[]>) => {
+      state.todo = [];
+      state.inProgress = [];
+      state.done = [];
+
       action.payload.forEach((issue) => {
         if (issue.state === "closed") {
           state.done.push(issue);
@@ -34,8 +38,17 @@ const issuesSlice = createSlice({
         }
       });
     },
-    moveIssue: (state, action: PayloadAction<any>) => {
-      // Handle drag and drop logic
+
+    moveIssue: (state, action) => {
+      const { source, destination } = action.payload;
+      const sourceId = source.droppableId as keyof IssuesState;
+      const destinationId = destination.droppableId as keyof IssuesState;
+
+      // Ensure that source and destination columns exist
+      if (!state[sourceId] || !state[destinationId]) return;
+
+      const [removed] = state[sourceId].splice(source.index, 1);
+      state[destinationId].splice(destination.index, 0, removed);
     },
   },
 });
