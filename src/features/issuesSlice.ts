@@ -13,45 +13,97 @@ interface IssuesState {
   done: Issue[];
 }
 
-const initialState: IssuesState = {
-  todo: [],
-  inProgress: [],
-  done: [],
+interface RootState {
+  currentRepoUrl: string;
+  issuesData: { [repoUrl: string]: IssuesState };
+}
+
+const initialState: RootState = {
+  currentRepoUrl: "",
+  issuesData: {},
 };
 
 const issuesSlice = createSlice({
   name: "issues",
   initialState,
   reducers: {
-    setIssues: (state, action: PayloadAction<Issue[]>) => {
-      state.todo = [];
-      state.inProgress = [];
-      state.done = [];
+    setIssues: (
+      state,
+      action: PayloadAction<{ repoUrl: string; issues: Issue[] }>
+    ) => {
+      const { repoUrl, issues } = action.payload;
+      if (!repoUrl) {
+        console.error("Repo URL is not provided.");
+        return;
+      }
 
-      action.payload.forEach((issue) => {
-        if (issue.state === "closed") {
-          state.done.push(issue);
-        } else if (issue.assignee) {
-          state.inProgress.push(issue);
-        } else {
-          state.todo.push(issue);
-        }
-      });
+      if (!state.issuesData) {
+        state.issuesData = {};
+      }
+
+      if (!state.issuesData[repoUrl]) {
+        state.issuesData[repoUrl] = {
+          todo: [],
+          inProgress: [],
+          done: [],
+        };
+
+        issues.forEach((issue) => {
+          if (issue.state === "closed") {
+            state.issuesData[repoUrl].done.push(issue);
+          } else if (issue.assignee) {
+            state.issuesData[repoUrl].inProgress.push(issue);
+          } else {
+            state.issuesData[repoUrl].todo.push(issue);
+          }
+        });
+
+        localStorage.setItem("issuesState", JSON.stringify(state));
+      }
     },
 
-    moveIssue: (state, action) => {
-      const { source, destination } = action.payload;
+    moveIssue: (
+      state,
+      action: PayloadAction<{ repoUrl: string; source: any; destination: any }>
+    ) => {
+      const { repoUrl, source, destination } = action.payload;
+
+      if (!state.issuesData[repoUrl]) return;
+
       const sourceId = source.droppableId as keyof IssuesState;
       const destinationId = destination.droppableId as keyof IssuesState;
 
-      // Ensure that source and destination columns exist
-      if (!state[sourceId] || !state[destinationId]) return;
+      if (
+        !state.issuesData[repoUrl][sourceId] ||
+        !state.issuesData[repoUrl][destinationId]
+      )
+        return;
 
-      const [removed] = state[sourceId].splice(source.index, 1);
-      state[destinationId].splice(destination.index, 0, removed);
+      const [removed] = state.issuesData[repoUrl][sourceId].splice(
+        source.index,
+        1
+      );
+      state.issuesData[repoUrl][destinationId].splice(
+        destination.index,
+        0,
+        removed
+      );
+
+      localStorage.setItem("issuesState", JSON.stringify(state));
+    },
+
+    setRepoUrl: (state, action: PayloadAction<string>) => {
+      state.currentRepoUrl = action.payload;
+      const savedState = JSON.parse(
+        localStorage.getItem("issuesState") || "{}"
+      );
+      if (savedState.issuesData && savedState.issuesData[action.payload]) {
+        state.issuesData[action.payload] =
+          savedState.issuesData[action.payload];
+      }
     },
   },
 });
 
-export const { setIssues, moveIssue } = issuesSlice.actions;
+export const { setIssues, moveIssue, setRepoUrl } = issuesSlice.actions;
 export default issuesSlice.reducer;
