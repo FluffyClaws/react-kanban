@@ -1,14 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { ListGroup } from "react-bootstrap";
-
-interface IssueProps {
-  issue: {
-    id: number;
-    title: string;
-  };
-  index: number;
-}
+import { IssueProps } from "../types/issues";
 
 const Issue: React.FC<IssueProps> = ({ issue, index }) => {
   return (

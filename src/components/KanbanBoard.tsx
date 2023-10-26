@@ -45,9 +45,7 @@ const KanbanBoard: React.FC = () => {
   };
 
   // If repoUrl is not set, don't render the board
-  if (!repoUrl) {
-    return <div>Please enter a repository URL to load issues.</div>;
-  }
+  if (!repoUrl) return <div>Please enter a repository URL to load issues.</div>;
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

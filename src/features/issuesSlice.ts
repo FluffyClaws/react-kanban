@@ -1,22 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Issue {
-  id: number;
-  title: string;
-  state: "open" | "closed";
-  assignee: any;
-}
-
-interface IssuesState {
-  todo: Issue[];
-  inProgress: Issue[];
-  done: Issue[];
-}
-
-interface RootState {
-  currentRepoUrl: string;
-  issuesData: { [repoUrl: string]: IssuesState };
-}
+import { Issue, RootState, IssuesState } from "../types/issues";
 
 const initialState: RootState = {
   currentRepoUrl: "",

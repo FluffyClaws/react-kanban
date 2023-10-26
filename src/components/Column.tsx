@@ -2,12 +2,7 @@ import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { Card, ListGroup } from "react-bootstrap";
 import Issue from "./Issue";
-
-interface ColumnProps {
-  title: string;
-  issues: any[];
-  columnId: "todo" | "inProgress" | "done";
-}
+import { ColumnProps } from "../types/issues";
 
 const Column: React.FC<ColumnProps> = ({ title, issues, columnId }) => {
   const ids = issues.map((issue) => issue.id);
