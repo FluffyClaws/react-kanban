@@ -2,12 +2,7 @@ import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { Card, ListGroup } from "react-bootstrap";
 import Issue from "./Issue";
-
-interface ColumnProps {
-  title: string;
-  issues: any[];
-  columnId: "todo" | "inProgress" | "done";
-}
+import { ColumnProps } from "../types/issues";
 
 const Column: React.FC<ColumnProps> = ({ title, issues, columnId }) => {
   const ids = issues.map((issue) => issue.id);
@@ -16,7 +11,7 @@ const Column: React.FC<ColumnProps> = ({ title, issues, columnId }) => {
     console.error("Duplicate IDs detected:", ids);
   }
   return (
-    <Card style={{ margin: "16px", width: "250px" }}>
+    <Card>
       <Card.Header>{title}</Card.Header>
       <Droppable droppableId={columnId}>
         {(provided) => (

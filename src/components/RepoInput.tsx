@@ -1,43 +1,58 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchIssues } from "../api/githubAPI";
-import { setIssues, setRepoUrl } from "../features/issuesSlice";
+import useLoadIssues from "../hooks/useLoadIssues";
 
 const RepoInput: React.FC = () => {
   const [url, setUrl] = useState("");
-  const dispatch = useDispatch();
+  const [submittedUrl, setSubmittedUrl] = useState("");
+  const loadIssues = useLoadIssues(url);
 
-  const handleLoad = async () => {
-    const savedState = JSON.parse(localStorage.getItem("issuesState") || "{}");
-    if (savedState.issuesData && savedState.issuesData[url]) {
-      dispatch(setRepoUrl(url));
-    } else {
-      try {
-        const issues = await fetchIssues(url);
-        dispatch(setIssues({ repoUrl: url, issues }));
-        dispatch(setRepoUrl(url));
-      } catch (error) {
-        console.error("Failed to fetch issues:", error);
-      }
-    }
+  const handleLoad = () => {
+    setSubmittedUrl(url);
+    loadIssues();
   };
 
+  // Extract owner's account name and repo name from the submitted URL
+  const urlParts = submittedUrl.split("/");
+  const repoName = urlParts.pop();
+  const ownerName = urlParts.pop();
+
   return (
-    <div>
-      <input value={url} onChange={(e) => setUrl(e.target.value)} />
-      <button onClick={handleLoad}>Load</button>
-      <div>
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          Visit Repo
-        </a>
-        <a
-          href={url.split("/").slice(0, -1).join("/")}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Visit Owner's Profile
-        </a>
+    <div className="mb-4">
+      <div className="input-group mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Enter repository URL"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <div className="input-group-append">
+          <button className="btn btn-primary" onClick={handleLoad}>
+            Load
+          </button>
+        </div>
       </div>
+      {submittedUrl && (
+        <div>
+          <a
+            href={`https://github.com/${ownerName}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-link"
+          >
+            Visit {ownerName}'s Profile
+          </a>
+          /
+          <a
+            href={submittedUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-link"
+          >
+            Visit {repoName} Repo
+          </a>
+        </div>
+      )}
     </div>
   );
 };

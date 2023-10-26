@@ -1,60 +1,25 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Container, Row, Col } from "react-bootstrap";
-import { moveIssue } from "../features/issuesSlice";
 import Column from "./Column";
+import useDragEnd from "../hooks/useDragEnd";
+import { getIssuesForCurrentRepo } from "../features/issuesSelectors";
+import "../style/KanbanBoard.scss";
 
 const KanbanBoard: React.FC = () => {
-  const dispatch = useDispatch();
+  const handleDragEnd = useDragEnd();
   const repoUrl = useSelector((state: any) => state.issues?.currentRepoUrl);
-  const issues = useSelector(
-    (state: any) =>
-      state.issues?.issuesData?.[repoUrl] || {
-        todo: [],
-        inProgress: [],
-        done: [],
-      }
-  );
+  const issues = useSelector(getIssuesForCurrentRepo);
 
-  const handleDragEnd = (result: any) => {
-    const { destination, source } = result;
-
-    if (!destination) return;
-
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
-
-    const payload = {
-      repoUrl: repoUrl,
-      source: {
-        droppableId: source.droppableId,
-        index: source.index,
-      },
-      destination: {
-        droppableId: destination.droppableId,
-        index: destination.index,
-      },
-    };
-
-    dispatch(moveIssue(payload));
-  };
-
-  // If repoUrl is not set, don't render the board
-  if (!repoUrl) {
-    return <div>Please enter a repository URL to load issues.</div>;
-  }
+  if (!repoUrl) return <div>Please enter a repository URL to load issues.</div>;
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Container>
-        <Row>
+        <Row className="gy-4">
           <Col>
-            <Column title="ToDo" issues={issues.todo} columnId="todo" />
+            <Column title="To Do" issues={issues.todo} columnId="todo" />
           </Col>
           <Col>
             <Column
