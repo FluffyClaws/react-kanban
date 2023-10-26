@@ -1,26 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchIssues } from "../api/githubAPI";
-import { setIssues, setRepoUrl } from "../features/issuesSlice";
+import useLoadIssues from "../hooks/useLoadIssues";
 
 const RepoInput: React.FC = () => {
   const [url, setUrl] = useState("");
-  const dispatch = useDispatch();
-
-  const handleLoad = async () => {
-    const savedState = JSON.parse(localStorage.getItem("issuesState") || "{}");
-    if (savedState.issuesData && savedState.issuesData[url]) {
-      dispatch(setRepoUrl(url));
-    } else {
-      try {
-        const issues = await fetchIssues(url);
-        dispatch(setIssues({ repoUrl: url, issues }));
-        dispatch(setRepoUrl(url));
-      } catch (error) {
-        console.error("Failed to fetch issues:", error);
-      }
-    }
-  };
+  const handleLoad = useLoadIssues(url);
 
   return (
     <div>
