@@ -15,12 +15,11 @@ A dynamic web application that visualizes GitHub repository issues as a Kanban b
 
 ## Technologies Used
 
-- **React 18**: Utilizes the latest React version with hooks for efficient state management and rendering.
-- **TypeScript**: Strongly-typed language that builds on JavaScript, ensuring more robust code.
-- **React-Bootstrap**: Provides responsive design and styled-components for a modern UI/UX.
-- **Redux-Toolkit**: Efficient state management tool for storing issues and their positions.
-- **GitHub API**: Fetches issues dynamically based on user input.
-
+- **React 18**
+- **TypeScript**
+- **React-Bootstrap**
+- **Redux-Toolkit**
+- **GitHub API**
 ## How to Use
 
 1. Navigate to the application.
