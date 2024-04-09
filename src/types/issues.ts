@@ -3,7 +3,7 @@ export interface Issue {
   title: string;
   state: "open" | "closed";
   assignee: any;
-  number: number; // Issue number
+  number: number;
   created_at: string;
   user: {
     login: string;
